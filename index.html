@@ -1,16 +1,174 @@
-<!DOCTYPE html>
+      <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Friend</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>دوست هوشمند من 🤖</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #111827;
+      color: white;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .app {
+      width: 100%;
+      max-width: 500px;
+      height: 100vh;
+      background: #1f2937;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .header {
+      padding: 18px;
+      background: #2563eb;
+      text-align: center;
+      font-size: 22px;
+      font-weight: bold;
+    }
+
+    .status {
+      font-size: 13px;
+      margin-top: 5px;
+      opacity: 0.8;
+    }
+
+    .chat {
+      flex: 1;
+      padding: 15px;
+      overflow-y: auto;
+    }
+
+    .message {
+      padding: 12px 15px;
+      margin-bottom: 10px;
+      border-radius: 15px;
+      max-width: 80%;
+      line-height: 1.6;
+    }
+
+    .bot {
+      background: #374151;
+      margin-left: auto;
+    }
+
+    .user {
+      background: #2563eb;
+      margin-right: auto;
+    }
+
+    .input-area {
+      display: flex;
+      gap: 8px;
+      padding: 12px;
+      background: #111827;
+    }
+
+    input {
+      flex: 1;
+      padding: 13px;
+      border: none;
+      border-radius: 12px;
+      outline: none;
+      font-size: 16px;
+    }
+
+    button {
+      border: none;
+      border-radius: 12px;
+      padding: 0 18px;
+      background: #2563eb;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    button:active {
+      transform: scale(0.95);
+    }
+  </style>
 </head>
 
 <body>
 
-    <h1>🤖 دوست هوشمند من</h1>
+  <div class="app">
 
-    <p>اولین نسخه ربات ما ساخته شد!</p>
+    <div class="header">
+      🤖 دوست هوشمند من
+      <div class="status">آنلاین</div>
+    </div>
+
+    <div class="chat" id="chat">
+
+      <div class="message bot">
+        سلام! 👋<br>
+        من دوست هوشمند تو هستم 🤖<br>
+        خوشحالم که باهام صحبت می‌کنی!
+      </div>
+
+    </div>
+
+    <div class="input-area">
+      <input
+        id="messageInput"
+        type="text"
+        placeholder="پیامت رو بنویس..."
+      >
+
+      <button onclick="sendMessage()">ارسال</button>
+    </div>
+
+  </div>
+
+  <script>
+    function sendMessage() {
+
+      const input = document.getElementById("messageInput");
+      const message = input.value.trim();
+
+      if (message === "") return;
+
+      const chat = document.getElementById("chat");
+
+      const userMessage = document.createElement("div");
+      userMessage.className = "message user";
+      userMessage.textContent = message;
+
+      chat.appendChild(userMessage);
+
+      input.value = "";
+
+      setTimeout(() => {
+
+        const botMessage = document.createElement("div");
+        botMessage.className = "message bot";
+        botMessage.textContent =
+          "پیامت رو دیدم 😎 فعلاً مغز هوش مصنوعی من در حال ساخته شدنه!";
+
+        chat.appendChild(botMessage);
+
+        chat.scrollTop = chat.scrollHeight;
+
+      }, 500);
+    }
+
+    document.getElementById("messageInput").addEventListener("keydown", function(event) {
+      if (event.key === "Enter") {
+        sendMessage();
+      }
+    });
+  </script>
 
 </body>
 </html>

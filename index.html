@@ -132,42 +132,66 @@
   </div>
 
   <script>
-    function sendMessage() {
+    async function sendMessage() {
+  const input = document.getElementById("messageInput");
+  const message = input.value.trim();
 
-      const input = document.getElementById("messageInput");
-      const message = input.value.trim();
+  if (message === "") return;
 
-      if (message === "") return;
+  const chat = document.getElementById("chat");
 
-      const chat = document.getElementById("chat");
+  const userMessage = document.createElement("div");
+  userMessage.className = "message user";
+  userMessage.textContent = message;
+  chat.appendChild(userMessage);
 
-      const userMessage = document.createElement("div");
-      userMessage.className = "message user";
-      userMessage.textContent = message;
+  input.value = "";
 
-      chat.appendChild(userMessage);
+  const botMessage = document.createElement("div");
+  botMessage.className = "message bot";
+  botMessage.textContent = "دارم فکر می‌کنم... 🤔";
+  chat.appendChild(botMessage);
 
-      input.value = "";
+  chat.scrollTop = chat.scrollHeight;
 
-      setTimeout(() => {
+  try {
+    const response = await fetch(
+      "https://ai-friend-korosh-api.zelenskeycraft.workers.dev",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          message: message
+        })
+      }
+    );
 
-        const botMessage = document.createElement("div");
-        botMessage.className = "message bot";
-        botMessage.textContent =
-          "پیامت رو دیدم 😎 فعلاً مغز هوش مصنوعی من در حال ساخته شدنه!";
+    const data = await response.json();
 
-        chat.appendChild(botMessage);
-
-        chat.scrollTop = chat.scrollHeight;
-
-      }, 500);
+    if (data.answer) {
+      botMessage.textContent = data.answer;
+    } else {
+      botMessage.textContent = "یه مشکلی پیش اومد 😕";
     }
 
-    document.getElementById("messageInput").addEventListener("keydown", function(event) {
-      if (event.key === "Enter") {
-        sendMessage();
-      }
-    });
+  } catch (error) {
+    botMessage.textContent =
+      "نتونستم به مغزم وصل بشم 😕";
+    console.error(error);
+  }
+
+  chat.scrollTop = chat.scrollHeight;
+}
+
+document
+  .getElementById("messageInput")
+  .addEventListener("keydown", function(event) {
+    if (event.key === "Enter") {
+      sendMessage();
+    }
+  });
   </script>
 
 </body>
